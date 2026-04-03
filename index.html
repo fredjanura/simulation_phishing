@@ -19,9 +19,7 @@
             width: 320px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h2 {
-            text-align: center;
-        }
+        h2 { text-align: center; }
         input {
             width: 100%;
             padding: 10px;
@@ -53,14 +51,34 @@
 
     <div class="warning" id="warning">
         ⚠️ Ceci était une simulation de phishing pédagogique.<br><br>
-        Ne saisissez jamais vos identifiants après avoir cliqué sur un lien dans un email.
+        Redirection vers le questionnaire dans quelques secondes...
     </div>
 </div>
 
 <script>
+const FORM_URL = "https://forms.gle/GsfTBxbwwLZ4XumH6";
+
+let clicked = false;
+
+// Action au clic
 function simulate() {
+    clicked = true;
+
     document.getElementById("warning").style.display = "block";
+
+    // Redirection après 5 secondes
+    setTimeout(() => {
+        window.location.href = FORM_URL;
+    }, 5000);
 }
+
+// Tentative de redirection si l'utilisateur quitte la page
+window.addEventListener("beforeunload", function (e) {
+    if (!clicked) {
+        // Redirection indirecte (fonctionne dans certains cas seulement)
+        navigator.sendBeacon(FORM_URL);
+    }
+});
 </script>
 
 </body>
