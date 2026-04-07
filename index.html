@@ -1,85 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Authentification ENT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            width: 320px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h2 { text-align: center; }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #005ea5;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .warning {
-            margin-top: 15px;
-            color: red;
-            text-align: center;
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Espace numérique de travail</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Bandeau header */
+    .header {
+      background: #003189;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .header-subtitle {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    .rf-logo {
+      margin-left: auto;
+      font-size: 11px;
+      opacity: 0.7;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* Bandeau bleu-blanc-rouge */
+    .tricolor {
+      height: 5px;
+      background: linear-gradient(to right,
+        #002395 33.3%, #ffffff 33.3%, #ffffff 66.6%, #ED2939 66.6%);
+    }
+
+    /* Contenu principal */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #003189;
+      color: white;
+      padding: 20px 28px;
+    }
+    .card-header h1 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-header p {
+      font-size: 12px;
+      opacity: 0.75;
+    }
+
+    .card-body {
+      padding: 28px;
+    }
+
+    .alert {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      color: #664d03;
+      margin-bottom: 20px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    label span {
+      color: #e1000f;
+      margin-left: 2px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      border-color: #003189;
+      box-shadow: 0 0 0 2px rgba(0,49,137,0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 11px;
+      background: #003189;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #002070; }
+
+    .links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      font-size: 12px;
+    }
+    .links a {
+      color: #003189;
+      text-decoration: none;
+    }
+    .links a:hover { text-decoration: underline; }
+
+    /* Footer */
+    footer {
+      background: #f6f6f6;
+      border-top: 1px solid #ddd;
+      padding: 14px 24px;
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+    }
+    footer a { color: #003189; text-decoration: none; }
+  </style>
 </head>
 <body>
 
-<div class="login-box">
-    <h2>Connexion ENT</h2>
-    <input type="text" placeholder="Identifiant">
-    <input type="password" placeholder="Mot de passe">
-    <button onclick="simulate()">Se connecter</button>
-
-    <div class="warning" id="warning">
-        ⚠️ Ceci était une simulation de phishing pédagogique.<br><br>
-        Redirection vers le questionnaire dans quelques secondes...
+  <div class="header">
+    <div>
+      <div class="header-logo">ENT Académique</div>
+      <div class="header-subtitle">Espace Numérique de Travail</div>
     </div>
-</div>
+    <div class="rf-logo">République<br>Française</div>
+  </div>
 
-<script>
-const FORM_URL = "https://forms.gle/GsfTBxbwwLZ4XumH6";
+  <div class="tricolor"></div>
 
-let clicked = false;
+  <main>
+    <div class="card">
+      <div class="card-header">
+        <h1>Connexion à votre espace</h1>
+        <p>Authentification sécurisée — Éduconnect</p>
+      </div>
+      <div class="card-body">
 
-// Action au clic
-function simulate() {
-    clicked = true;
+        <div class="alert">
+          ⚠️ Suite à une activité suspecte, une vérification de votre
+          identité est requise avant le <strong>vendredi 10 avril 2026</strong>.
+        </div>
 
-    document.getElementById("warning").style.display = "block";
+        <form id="phishForm">
+          <div class="form-group">
+            <label>Identifiant académique <span>*</span></label>
+            <input type="text" name="username"
+                   placeholder="prenom.nom@ac-amiens.fr"
+                   autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label>Mot de passe <span>*</span></label>
+            <input type="password" name="password"
+                   placeholder="••••••••••••"
+                   autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn">Se connecter →</button>
+        </form>
 
-    // Redirection après 5 secondes
-    setTimeout(() => {
-        window.location.href = FORM_URL;
-    }, 5000);
-}
+        <div class="links">
+          <a href="#">Mot de passe oublié ?</a>
+          <a href="#">Première connexion</a>
+        </div>
 
-// Tentative de redirection si l'utilisateur quitte la page
-window.addEventListener("beforeunload", function (e) {
-    if (!clicked) {
-        // Redirection indirecte (fonctionne dans certains cas seulement)
-        navigator.sendBeacon(FORM_URL);
-    }
-});
-</script>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="#">Accessibilité</a> &nbsp;|&nbsp;
+    <a href="#">Mentions légales</a> &nbsp;|&nbsp;
+    <a href="#">Politique de confidentialité</a>
+    &nbsp;&nbsp;© Ministère de l'Éducation nationale
+  </footer>
+
+  <script>
+    // GoPhish injecte automatiquement son propre handler sur les formulaires.
+    // Ce script est un fallback pour les tests directs depuis GitHub Pages.
+    document.getElementById('phishForm').addEventListener('submit', function(e) {
+      // GoPhish remplace cette action par son propre endpoint.
+      // En dehors de GoPhish, on redirige vers la page de sensibilisation.
+      window.location.href =
+        'https://forms.gle/GsfTBxbwwLZ4XumH6';
+    });
+  </script>
 
 </body>
 </html>
